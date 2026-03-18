@@ -1,24 +1,3 @@
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>—</title>
-  <style>
-    :root{
-      --bg:#0f1724; --card:#0b1220; --accent:#06b6d4; --accent-2:#7c3aed; --muted:#9aa6bf; --text:#e6eef8;
-      --danger:#fb7185; --radius:14px;
-    }
-    @media (prefers-color-scheme: light){
-      :root{
-        --bg:#f6f8fb; --card:#ffffff; --accent:#06b6d4; --accent-2:#2563eb; --muted:#6b7280; --text:#0b1220; --danger:#ef4444;
-      }
-    }
-
-    *{box-sizing:border-box; -webkit-tap-highlight-color: transparent}
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased}
-    .app{max-width:480px;margin:0 auto;height:100vh;display:flex;flex-direction:column}
-
-    .content{flex:1;overflow:auto;padding:12px 12px 120px}
 
     .card{display:flex;gap:10px;align-items:center;background:var(--card);padding:10px;border-radius:12px;margin-bottom:10px;box-shadow:0 6px 20px rgba(2,6,23,0.35);border:1px solid rgba(255,255,255,0.02);transition:transform .14s}
     .thumb{width:64px;height:64px;border-radius:10px;object-fit:cover;border:1px solid rgba(255,255,255,0.03)}
