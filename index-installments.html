@@ -144,7 +144,7 @@
       to { opacity: 1; }
     }
 
-    /* لوحة تسجيل الدخول */
+    /* لوحة تسجيل الدخول والتسجيل */
     .login-container {
       display: flex;
       flex-direction: column;
@@ -218,6 +218,51 @@
     .btn-primary:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(0,168,255,0.3);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,168,255,0.3);
+      background: transparent;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 10px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0,168,255,0.1);
+      border-color: rgba(0,168,255,0.6);
+    }
+
+    .auth-divider {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .auth-link {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+
+    .auth-link a {
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .auth-link a:hover {
+      color: var(--success);
     }
 
     /* اللوحة الرئيسية */
@@ -700,6 +745,11 @@
       .client-stats {
         grid-template-columns: 1fr;
       }
+
+      .login-card {
+        padding: 30px;
+        max-width: 350px;
+      }
     }
 
     @media (max-width: 480px) {
@@ -717,6 +767,7 @@
 
       .login-card {
         padding: 24px;
+        max-width: 100%;
       }
 
       .dashboard-grid {
@@ -784,8 +835,42 @@
               </div>
               <button type="submit" class="btn-primary">دخول</button>
             </form>
+            <div class="auth-divider">أو</div>
+            <button type="button" class="btn-secondary" id="goToSignUp">إنشاء حساب جديد</button>
             <div style="text-align: center; margin-top: 20px; font-size: 12px; color: var(--muted);">
               حساب تجريبي: demo@installments.com / 123456
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- شاشة التسجيل (إنشاء حساب جديد) -->
+      <div class="screen signup-screen" id="signupScreen">
+        <div class="login-container">
+          <div style="text-align: center; font-size: 48px; margin-bottom: 20px;">✨</div>
+          <div class="login-card">
+            <div class="login-title">إنشاء حساب جديد</div>
+            <form id="signupForm">
+              <div class="form-group">
+                <label>اسم المستخدم</label>
+                <input type="text" id="signupName" placeholder="أدخل اسمك الكامل" required>
+              </div>
+              <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="signupEmail" placeholder="أدخل بريدك الإلكتروني" required>
+              </div>
+              <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="signupPassword" placeholder="أدخل كلمة مرور قوية" required>
+              </div>
+              <div class="form-group">
+                <label>تأكيد كلمة المرور</label>
+                <input type="password" id="signupConfirmPassword" placeholder="أدخل كلمة المرور مرة أخرى" required>
+              </div>
+              <button type="submit" class="btn-primary">إنشاء الحساب</button>
+            </form>
+            <div class="auth-link">
+              هل لديك حساب بالفعل؟ <a id="goToLogin">تسجيل الدخول</a>
             </div>
           </div>
         </div>
@@ -996,104 +1081,66 @@
 
           <div class="form-group">
             <label>ملاحظات</label>
-            <textarea id="clientNotes" placeholder="ملاحظات إضافية" style="padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: var(--text); font-size: 13px; resize: vertical; min-height: 80px;"></textarea>
-          </div>
-
-          <div style="background: rgba(0,168,255,0.1); border: 1px solid rgba(0,168,255,0.2); border-radius: 10px; padding: 12px; margin: 16px 0; font-size: 13px;">
-            <strong>القسط الشهري المحسوب:</strong> <span id="monthlyInstallmentCalc">0 د.ع</span>
+            <textarea id="clientNotes" placeholder="ملاحظات إضافية" style="padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: var(--text); height: 80px; resize: none; font-family: inherit;"></textarea>
           </div>
         </div>
 
         <div class="sheet-footer">
+          <button type="button" class="btn-primary" id="closeClientSheetBtn" style="background: rgba(255,255,255,0.1); color: var(--text);">إلغاء</button>
           <button type="submit" class="btn-primary">حفظ العميل</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ورقة تفاصيل العميل -->
-  <div class="sheet-backdrop" id="clientDetailsSheetBackdrop">
-    <div class="sheet">
-      <div class="sheet-header">
-        <h2 class="sheet-title" id="clientDetailsName">تفاصيل العميل</h2>
-        <button class="btn-close" id="closeClientDetailsSheet">✕</button>
-      </div>
-
-      <div id="clientDetailsContent"></div>
-    </div>
-  </div>
-
-  <!-- ورقة إضافة دفعة جديدة -->
-  <div class="sheet-backdrop" id="paymentSheetBackdrop">
-    <div class="sheet">
-      <div class="sheet-header">
-        <h2 class="sheet-title">إضافة دفعة جديدة</h2>
-        <button class="btn-close" id="closePaymentSheet">✕</button>
-      </div>
-
-      <form id="paymentForm">
-        <div class="form-group">
-          <label>المبلغ *</label>
-          <input type="number" id="paymentAmount" placeholder="المبلغ (د.ع)" step="0.01" required>
-        </div>
-
-        <div class="form-group">
-          <label>التاريخ *</label>
-          <input type="date" id="paymentDate" required>
-        </div>
-
-        <div class="form-group">
-          <label>ملاحظات</label>
-          <textarea id="paymentNotes" placeholder="ملاحظات عن الدفعة" style="padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: var(--text); font-size: 13px; resize: vertical; min-height: 80px;"></textarea>
-        </div>
-
-        <div class="sheet-footer">
-          <button type="submit" class="btn-primary">إضافة الدفعة</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Toast -->
+  <!-- Toast notification -->
   <div class="toast" id="toast"></div>
 
-  <!-- Hidden file input for restore -->
-  <input type="file" id="restoreFile" accept=".json" style="display: none;">
-
   <script>
-    // متغيرات عامة
-    let currentUser = null;
-    let clients = [];
-    let currentClientId = null;
-    let settings = {
-      whatsappNumber: '',
-      reminderDays: 3
+    // ============ متغيرات عامة ============
+    const app = {
+      users: [],
+      clients: [],
+      currentUser: null,
+      editingClientId: null
     };
 
-    // تحميل البيانات من localStorage
+    // ============ عناصر DOM ============
+    const screens = {
+      login: document.getElementById('loginScreen'),
+      signup: document.getElementById('signupScreen'),
+      dashboard: document.getElementById('dashboardScreen'),
+      clients: document.getElementById('clientsScreen'),
+      alerts: document.getElementById('alertsScreen'),
+      reports: document.getElementById('reportsScreen'),
+      settings: document.getElementById('settingsScreen')
+    };
+
+    const forms = {
+      login: document.getElementById('loginForm'),
+      signup: document.getElementById('signupForm'),
+      client: document.getElementById('clientForm')
+    };
+
+    // ============ تحميل البيانات من LocalStorage ============
     function loadData() {
-      const stored = localStorage.getItem('installmentsAppData');
-      if (stored) {
-        try {
-          const data = JSON.parse(stored);
-          clients = data.clients || [];
-          settings = { ...settings, ...data.settings };
-        } catch (e) {
-          console.error('خطأ في تحميل البيانات:', e);
-        }
+      const saved = localStorage.getItem('installmentsApp');
+      if (saved) {
+        const data = JSON.parse(saved);
+        app.users = data.users || [];
+        app.clients = data.clients || [];
       }
     }
 
-    // حفظ البيانات إلى localStorage
+    // ============ حفظ البيانات في LocalStorage ============
     function saveData() {
-      const data = {
-        clients,
-        settings
-      };
-      localStorage.setItem('installmentsAppData', JSON.stringify(data));
+      localStorage.setItem('installmentsApp', JSON.stringify({
+        users: app.users,
+        clients: app.clients
+      }));
     }
 
-    // عرض الإشعار
+    // ============ إظهار رسالة Toast ============
     function showToast(message, type = 'success') {
       const toast = document.getElementById('toast');
       toast.textContent = message;
@@ -1104,705 +1151,124 @@
       }, 3000);
     }
 
-    // تحويل الشاشة
+    // ============ التنقل بين الشاشات ============
     function switchScreen(screenName) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(screenName + 'Screen').classList.add('active');
-      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-      document.querySelector(`[data-screen="${screenName}"]`).classList.add('active');
-
-      // تحديث البيانات حسب الشاشة
-      if (screenName === 'dashboard') updateDashboard();
-      if (screenName === 'alerts') updateAlerts();
+      Object.values(screens).forEach(screen => screen.classList.remove('active'));
+      if (screens[screenName]) {
+        screens[screenName].classList.add('active');
+      }
+      
+      // تحديث navigation
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      document.querySelector(`[data-screen="${screenName}"]`)?.classList.add('active');
     }
 
-    // تسجيل الدخول
-    document.getElementById('loginForm').addEventListener('submit', (e) => {
+    // ============ معالجة تسجيل الدخول ============
+    forms.login.addEventListener('submit', (e) => {
       e.preventDefault();
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
 
-      // تحقق بسيط
+      // للتجربة: accept demo account
       if (email === 'demo@installments.com' && password === '123456') {
-        currentUser = { email, name: 'المسؤول' };
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        loadData();
-        document.getElementById('loginScreen').classList.remove('active');
-        document.getElementById('app').style.display = 'flex';
-        document.querySelector('.navbar').style.display = 'flex';
-        document.querySelector('.sidebar').style.display = 'flex';
+        app.currentUser = { email, name: 'مستخدم تجريبي' };
         switchScreen('dashboard');
         updateDashboard();
-      } else {
-        showToast('بيانات الدخول غير صحيحة', 'error');
-      }
-    });
-
-    // تسجيل الخروج
-    document.getElementById('btnLogout').addEventListener('click', logout);
-    document.getElementById('btnLogoutSettings').addEventListener('click', logout);
-
-    function logout() {
-      currentUser = null;
-      localStorage.removeItem('currentUser');
-      document.getElementById('loginScreen').classList.add('active');
-      document.getElementById('app').style.display = 'none';
-      document.querySelector('.navbar').style.display = 'none';
-      document.querySelector('.sidebar').style.display = 'none';
-      document.getElementById('loginForm').reset();
-    }
-
-    // تحديث اللوحة الرئيسية
-    function updateDashboard() {
-      let totalClients = clients.length;
-      let totalDue = 0;
-      let totalReceived = 0;
-      let totalOverdue = 0;
-      let upcomingPayments = [];
-
-      const today = new Date();
-
-      clients.forEach(client => {
-        const remaining = client.installmentAmount - (client.firstPayment || 0) - (client.payments?.reduce((sum, p) => sum + p.amount, 0) || 0);
-        totalDue += remaining > 0 ? remaining : 0;
-        totalReceived += client.payments?.reduce((sum, p) => sum + p.amount, 0) || 0;
-
-        // حساب الأقساط المستحقة
-        const monthlyAmount = (client.installmentAmount - (client.firstPayment || 0)) / client.months;
-        const daysElapsed = Math.floor((today - new Date(client.startDate)) / (1000 * 60 * 60 * 24));
-        const monthsElapsed = Math.floor(daysElapsed / 30);
-        const expectedPayments = client.months - monthsElapsed - 1;
-
-        if (expectedPayments < 0) {
-          totalOverdue += Math.abs(expectedPayments) * monthlyAmount;
-        }
-
-        // أقساط قريبة الاستحقاق
-        if (monthsElapsed < client.months && expectedPayments <= settings.reminderDays / 30) {
-          upcomingPayments.push({
-            name: client.name,
-            amount: monthlyAmount,
-            daysUntilDue: Math.ceil(30 - (daysElapsed % 30))
-          });
-        }
-      });
-
-      document.getElementById('statClients').textContent = totalClients;
-      document.getElementById('statTotalDue').textContent = totalDue.toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 });
-      document.getElementById('statReceived').textContent = totalReceived.toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 });
-      document.getElementById('statOverdue').textContent = totalOverdue.toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 });
-
-      document.getElementById('dashboardDate').textContent = new Date().toLocaleDateString('ar-IQ');
-
-      // عرض الأقساط القريبة
-      const upcomingEl = document.getElementById('upcomingPayments');
-      if (upcomingPayments.length > 0) {
-        upcomingEl.innerHTML = upcomingPayments.map(p => `
-          <div style="background: rgba(0,168,255,0.1); border-radius: 10px; padding: 12px; border: 1px solid rgba(0,168,255,0.2);">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-              <strong>${p.name}</strong>
-              <span style="color: var(--accent);">${p.amount.toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 })}</span>
-            </div>
-            <div style="font-size: 12px; color: var(--muted);">يستحق خلال ${p.daysUntilDue} يوم</div>
-          </div>
-        `).join('');
-      }
-    }
-
-    // تحديث شاشة العملاء
-    function updateClientsScreen() {
-      const searchTerm = document.getElementById('clientSearch').value.toLowerCase();
-      const filtered = clients.filter(c => c.name.toLowerCase().includes(searchTerm));
-
-      const clientsEl = document.getElementById('clientsList');
-      if (filtered.length === 0) {
-        clientsEl.innerHTML = '<div style="text-align: center; color: var(--muted); padding: 40px;">لا توجد عملاء بعد</div>';
+        showToast('تم تسجيل الدخول بنجاح');
         return;
       }
 
-      clientsEl.innerHTML = filtered.map(client => {
-        const remaining = client.installmentAmount - (client.firstPayment || 0) - (client.payments?.reduce((sum, p) => sum + p.amount, 0) || 0);
-        return `
-          <div class="client-card" data-client-id="${client.id}">
-            <div class="client-info" style="cursor: pointer;" onclick="openClientDetails('${client.id}')">
-              <div class="client-name">${client.name}</div>
-              <div class="client-meta">
-                <span>📞 ${client.phone}</span>
-                <span>💰 المتبقي: ${remaining.toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 })}</span>
-              </div>
-            </div>
-            <div class="client-actions">
-              <button class="btn-icon" onclick="editClient('${client.id}'); event.stopPropagation();" title="تعديل">✎</button>
-              <button class="btn-icon danger" onclick="deleteClient('${client.id}'); event.stopPropagation();" title="حذف">🗑</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
+      const user = app.users.find(u => u.email === email && u.password === password);
+      if (user) {
+        app.currentUser = user;
+        switchScreen('dashboard');
+        updateDashboard();
+        showToast('تم تسجيل الدخول بنجاح');
+      } else {
+        showToast('البريد الإلكتروني أو كلمة المرور غير صحيحة', 'error');
+      }
+    });
 
-    // تحديث التنبيهات
-    function updateAlerts() {
-      const today = new Date();
-      const overdueAlerts = [];
-      const upcomingAlerts = [];
+    // ============ معالجة التسجيل (إنشاء حساب) ============
+    forms.signup.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('signupName').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      const confirmPassword = document.getElementById('signupConfirmPassword').value;
 
-      clients.forEach(client => {
-        const monthlyAmount = (client.installmentAmount - (client.firstPayment || 0)) / client.months;
-        const daysElapsed = Math.floor((today - new Date(client.startDate)) / (1000 * 60 * 60 * 24));
-        const monthsElapsed = Math.floor(daysElapsed / 30);
-        const expectedPayments = client.months - monthsElapsed - 1;
-
-        if (expectedPayments < 0) {
-          overdueAlerts.push({
-            name: client.name,
-            amount: Math.abs(expectedPayments) * monthlyAmount,
-            daysOverdue: Math.abs(expectedPayments) * 30
-          });
-        } else if (expectedPayments <= settings.reminderDays / 30) {
-          upcomingAlerts.push({
-            name: client.name,
-            amount: monthlyAmount,
-            daysUntilDue: Math.ceil(30 - (daysElapsed % 30))
-          });
-        }
-      });
-
-      // عرض الأقساط المتأخرة
-      const overdueEl = document.getElementById('overdueAlerts');
-      if (overdueAlerts.length > 0) {
-        overdueEl.innerHTML = overdueAlerts.map(a => `
-          <div class="alert-item danger">
-            <div class="alert-text"><strong>${a.name}</strong><br>${a.amount.toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 })}</div>
-            <div class="alert-days">${a.daysOverdue} يوم متأخر</div>
-          </div>
-        `).join('');
+      // التحقق من صحة كلمة المرور
+      if (password !== confirmPassword) {
+        showToast('كلمات المرور غير متطابقة', 'error');
+        return;
       }
 
-      // عرض الأقساط القريبة
-      const upcomingEl = document.getElementById('upcomingAlerts');
-      if (upcomingAlerts.length > 0) {
-        upcomingEl.innerHTML = upcomingAlerts.map(a => `
-          <div class="alert-item">
-            <div class="alert-text"><strong>${a.name}</strong><br>${a.amount.toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 })}</div>
-            <div class="alert-days">${a.daysUntilDue} يوم</div>
-          </div>
-        `).join('');
+      if (password.length < 6) {
+        showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+        return;
       }
+
+      // التحقق من أن البريد الإلكتروني غير موجود
+      if (app.users.find(u => u.email === email)) {
+        showToast('هذا البريد الإلكتروني موجود بالفعل', 'error');
+        return;
+      }
+
+      // إنشاء حساب جديد
+      const newUser = { name, email, password, id: Date.now() };
+      app.users.push(newUser);
+      saveData();
+
+      showToast('تم إنشاء الحساب بنجاح. يرجى تسجيل الدخول');
+      
+      // مسح الحقول
+      forms.signup.reset();
+      
+      // الرجوع لشاشة الدخول
+      switchScreen('login');
+      
+      // ملء حقل البريد الإلكتروني في نموذج الدخول
+      document.getElementById('loginEmail').value = email;
+    });
+
+    // ============ الأزرار الملاحية ============
+    document.getElementById('goToSignUp').addEventListener('click', () => {
+      switchScreen('signup');
+    });
+
+    document.getElementById('goToLogin').addEventListener('click', () => {
+      switchScreen('login');
+    });
+
+    // ============ تحديث لوحة التحكم ============
+    function updateDashboard() {
+      const date = new Date().toLocaleDateString('ar-IQ');
+      document.getElementById('dashboardDate').textContent = date;
+      
+      const clientsCount = app.clients.length;
+      document.getElementById('statClients').textContent = clientsCount;
     }
 
-    // التنقل بين الشاشات
+    // ============ تسجيل الخروج ============
+    document.getElementById('btnLogout').addEventListener('click', () => {
+      app.currentUser = null;
+      switchScreen('login');
+      forms.login.reset();
+      showToast('تم تسجيل الخروج');
+    });
+
+    // ============ التنقل بين الشاشات عبر القائمة الجانبية ============
     document.querySelectorAll('.nav-item').forEach(item => {
       item.addEventListener('click', () => {
-        switchScreen(item.dataset.screen);
+        const screen = item.getAttribute('data-screen');
+        switchScreen(screen);
       });
     });
 
-    // عميل جديد
-    document.getElementById('btnNewClient').addEventListener('click', () => {
-      currentClientId = null;
-      document.getElementById('clientSheetTitle').textContent = 'عميل جديد';
-      document.getElementById('clientForm').reset();
-      document.getElementById('clientIDPreview').style.display = 'none';
-      document.getElementById('clientStartDate').valueAsDate = new Date();
-      document.getElementById('clientSheetBackdrop').classList.add('show');
-    });
-
-    // إضافة/تحديث العميل
-    document.getElementById('clientForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const clientData = {
-        id: currentClientId || Date.now().toString(),
-        name: document.getElementById('clientName').value,
-        phone: document.getElementById('clientPhone').value,
-        address: document.getElementById('clientAddress').value,
-        idImage: document.getElementById('clientIDPreview').src || '',
-        installmentAmount: parseFloat(document.getElementById('clientInstallmentAmount').value),
-        firstPayment: parseFloat(document.getElementById('clientFirstPayment').value) || 0,
-        months: parseInt(document.getElementById('clientMonths').value),
-        startDate: document.getElementById('clientStartDate').value,
-        notes: document.getElementById('clientNotes').value,
-        payments: currentClientId ? (clients.find(c => c.id === currentClientId)?.payments || []) : [],
-        createdDate: currentClientId ? clients.find(c => c.id === currentClientId)?.createdDate : new Date().toISOString()
-      };
-
-      if (currentClientId) {
-        const idx = clients.findIndex(c => c.id === currentClientId);
-        if (idx !== -1) clients[idx] = clientData;
-      } else {
-        clients.unshift(clientData);
-      }
-
-      saveData();
-      showToast(currentClientId ? 'تم تحديث العميل' : 'تمت إضافة العميل');
-      document.getElementById('clientSheetBackdrop').classList.remove('show');
-      updateClientsScreen();
-      updateDashboard();
-    });
-
-    // معالجة رفع الصورة
-    document.getElementById('clientIDFile').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          document.getElementById('clientIDPreview').src = event.target.result;
-          document.getElementById('clientIDPreview').style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    // حساب القسط الشهري
-    document.getElementById('clientInstallmentAmount').addEventListener('input', calculateMonthly);
-    document.getElementById('clientFirstPayment').addEventListener('input', calculateMonthly);
-    document.getElementById('clientMonths').addEventListener('input', calculateMonthly);
-
-    function calculateMonthly() {
-      const total = parseFloat(document.getElementById('clientInstallmentAmount').value) || 0;
-      const first = parseFloat(document.getElementById('clientFirstPayment').value) || 0;
-      const months = parseInt(document.getElementById('clientMonths').value) || 1;
-      const monthly = (total - first) / months;
-      document.getElementById('monthlyInstallmentCalc').textContent = monthly.toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 });
-    }
-
-    // تعديل العميل
-    function editClient(clientId) {
-      const client = clients.find(c => c.id === clientId);
-      if (!client) return;
-
-      currentClientId = clientId;
-      document.getElementById('clientSheetTitle').textContent = 'تعديل العميل';
-      document.getElementById('clientName').value = client.name;
-      document.getElementById('clientPhone').value = client.phone;
-      document.getElementById('clientAddress').value = client.address || '';
-      document.getElementById('clientInstallmentAmount').value = client.installmentAmount;
-      document.getElementById('clientFirstPayment').value = client.firstPayment || 0;
-      document.getElementById('clientMonths').value = client.months;
-      document.getElementById('clientStartDate').value = client.startDate;
-      document.getElementById('clientNotes').value = client.notes || '';
-
-      if (client.idImage) {
-        document.getElementById('clientIDPreview').src = client.idImage;
-        document.getElementById('clientIDPreview').style.display = 'block';
-      }
-
-      calculateMonthly();
-      document.getElementById('clientSheetBackdrop').classList.add('show');
-    }
-
-    // حذف العميل
-    function deleteClient(clientId) {
-      if (!confirm('هل تريد حذف هذا العميل؟')) return;
-      clients = clients.filter(c => c.id !== clientId);
-      saveData();
-      showToast('تم حذف العميل');
-      updateClientsScreen();
-      updateDashboard();
-    }
-
-    // فتح تفاصيل العميل
-    function openClientDetails(clientId) {
-      const client = clients.find(c => c.id === clientId);
-      if (!client) return;
-
-      currentClientId = clientId;
-      const remaining = client.installmentAmount - (client.firstPayment || 0) - (client.payments?.reduce((sum, p) => sum + p.amount, 0) || 0);
-      const monthlyAmount = (client.installmentAmount - (client.firstPayment || 0)) / client.months;
-
-      let html = `
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-          ${client.idImage ? `<img src="${client.idImage}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px;">` : ''}
-          
-          <div>
-            <h3 style="font-weight: 700; margin-bottom: 10px;">معلومات العميل</h3>
-            <div style="background: rgba(255,255,255,0.02); border-radius: 10px; padding: 12px; border: 1px solid rgba(255,255,255,0.05);">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                <span style="color: var(--muted);">الاسم:</span>
-                <strong>${client.name}</strong>
-              </div>
-              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                <span style="color: var(--muted);">الهاتف:</span>
-                <strong>${client.phone}</strong>
-              </div>
-              <div style="display: flex; justify-content: space-between;">
-                <span style="color: var(--muted);">العنوان:</span>
-                <strong>${client.address || 'لم يتم تحديده'}</strong>
-              </div>
-            </div>
-          </div>
-
-          <div class="client-stats">
-            <div class="client-stat-item">
-              <div class="client-stat-label">القسط الإجمالي</div>
-              <div class="client-stat-value">${client.installmentAmount.toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 })}</div>
-            </div>
-            <div class="client-stat-item">
-              <div class="client-stat-label">المتبقي</div>
-              <div class="client-stat-value" style="color: ${remaining > 0 ? 'var(--warning)' : 'var(--success)'};">${remaining.toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 })}</div>
-            </div>
-            <div class="client-stat-item">
-              <div class="client-stat-label">الدفعة الأولى</div>
-              <div class="client-stat-value">${(client.firstPayment || 0).toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 })}</div>
-            </div>
-            <div class="client-stat-item">
-              <div class="client-stat-label">القسط الشهري</div>
-              <div class="client-stat-value">${monthlyAmount.toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 })}</div>
-            </div>
-          </div>
-
-          <div>
-            <h3 style="font-weight: 700; margin-bottom: 10px;">تفاصيل القسط</h3>
-            <div style="background: rgba(255,255,255,0.02); border-radius: 10px; padding: 12px; border: 1px solid rgba(255,255,255,0.05);">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                <span style="color: var(--muted);">تاريخ البداية:</span>
-                <strong>${new Date(client.startDate).toLocaleDateString('ar-IQ')}</strong>
-              </div>
-              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                <span style="color: var(--muted);">عدد الأشهر:</span>
-                <strong>${client.months} أشهر</strong>
-              </div>
-              <div style="display: flex; justify-content: space-between;">
-                <span style="color: var(--muted);">تاريخ الانتهاء المتوقع:</span>
-                <strong>${new Date(new Date(client.startDate).getTime() + client.months * 30 * 24 * 60 * 60 * 1000).toLocaleDateString('ar-IQ')}</strong>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-              <h3 style="font-weight: 700;">سجل الدفعات</h3>
-              <button class="btn-add" onclick="openPaymentSheet('${client.id}')">+ دفعة جديدة</button>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              ${client.payments && client.payments.length > 0 ? client.payments.map(p => `
-                <div class="payment-record">
-                  <div class="payment-record-header">
-                    <span>${new Date(p.date).toLocaleDateString('ar-IQ')}</span>
-                    <span class="payment-amount">${p.amount.toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 })}</span>
-                  </div>
-                  ${p.notes ? `<div style="font-size: 12px; color: var(--muted);">${p.notes}</div>` : ''}
-                </div>
-              `).join('') : '<div style="text-align: center; color: var(--muted); padding: 20px;">لم تتم أي دفعات بعد</div>'}
-            </div>
-          </div>
-
-          ${client.notes ? `
-            <div>
-              <h3 style="font-weight: 700; margin-bottom: 10px;">ملاحظات</h3>
-              <div style="background: rgba(255,255,255,0.02); border-radius: 10px; padding: 12px; border: 1px solid rgba(255,255,255,0.05); font-size: 13px;">
-                ${client.notes}
-              </div>
-            </div>
-          ` : ''}
-
-          <div style="display: flex; gap: 10px;">
-            <button class="btn-primary" onclick="editClient('${client.id}'); document.getElementById('clientDetailsSheetBackdrop').classList.remove('show');" style="flex: 1;">تعديل</button>
-            <button class="btn-primary" onclick="sendWhatsAppReminder('${client.id}')" style="flex: 1; background: rgba(16,185,129,0.2); color: var(--success);">إرسال WhatsApp</button>
-          </div>
-        </div>
-      `;
-
-      document.getElementById('clientDetailsContent').innerHTML = html;
-      document.getElementById('clientDetailsName').textContent = client.name;
-      document.getElementById('clientDetailsSheetBackdrop').classList.add('show');
-    }
-
-    // فتح ورقة إضافة دفعة
-    function openPaymentSheet(clientId) {
-      currentClientId = clientId;
-      document.getElementById('paymentForm').reset();
-      document.getElementById('paymentDate').valueAsDate = new Date();
-      document.getElementById('paymentSheetBackdrop').classList.add('show');
-    }
-
-    // إضافة دفعة جديدة
-    document.getElementById('paymentForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const client = clients.find(c => c.id === currentClientId);
-      if (!client) return;
-
-      if (!client.payments) client.payments = [];
-
-      client.payments.push({
-        date: document.getElementById('paymentDate').value,
-        amount: parseFloat(document.getElementById('paymentAmount').value),
-        notes: document.getElementById('paymentNotes').value
-      });
-
-      saveData();
-      showToast('تمت إضافة الدفعة');
-      document.getElementById('paymentSheetBackdrop').classList.remove('show');
-      openClientDetails(currentClientId);
-      updateDashboard();
-
-      // إرسال تنبيه WhatsApp تلقائي
-      if (settings.whatsappNumber) {
-        sendWhatsAppNotification(client, 'payment');
-      }
-    });
-
-    // إرسال تنبيه WhatsApp
-    function sendWhatsAppReminder(clientId) {
-      const client = clients.find(c => c.id === clientId);
-      if (!client) return;
-
-      if (!settings.whatsappNumber) {
-        showToast('لم يتم تعيين رقم WhatsApp', 'error');
-        return;
-      }
-
-      sendWhatsAppNotification(client, 'reminder');
-    }
-
-    function sendWhatsAppNotification(client, type) {
-      const remaining = client.installmentAmount - (client.firstPayment || 0) - (client.payments?.reduce((sum, p) => sum + p.amount, 0) || 0);
-      const monthlyAmount = (client.installmentAmount - (client.firstPayment || 0)) / client.months;
-
-      let message = '';
-      if (type === 'reminder') {
-        message = `تذكير قسط: العميل ${client.name}%0Aالمبلغ المستحق: ${monthlyAmount.toFixed(0)} د.ع%0Aالتاريخ: ${new Date().toLocaleDateString('ar-IQ')}`;
-      } else if (type === 'payment') {
-        message = `تم استقبال دفعة من ${client.name}%0Aالمتبقي: ${remaining.toFixed(0)} د.ع%0Aالتاريخ: ${new Date().toLocaleDateString('ar-IQ')}`;
-      }
-
-      const whatsappLink = `https://wa.me/${settings.whatsappNumber}?text=${message}`;
-      window.open(whatsappLink, '_blank');
-      showToast('تم فتح WhatsApp');
-    }
-
-    // إغلاق الأوراق
-    document.getElementById('closeClientSheet').addEventListener('click', () => {
-      document.getElementById('clientSheetBackdrop').classList.remove('show');
-    });
-
-    document.getElementById('closeClientDetailsSheet').addEventListener('click', () => {
-      document.getElementById('clientDetailsSheetBackdrop').classList.remove('show');
-    });
-
-    document.getElementById('closePaymentSheet').addEventListener('click', () => {
-      document.getElementById('paymentSheetBackdrop').classList.remove('show');
-    });
-
-    // البحث عن عميل
-    document.getElementById('clientSearch').addEventListener('input', updateClientsScreen);
-
-    // التقارير
-    document.getElementById('reportDaily').addEventListener('click', generateDailyReport);
-    document.getElementById('reportMonthly').addEventListener('click', generateMonthlyReport);
-    document.getElementById('reportExcel').addEventListener('click', exportToExcel);
-    document.getElementById('reportPDF').addEventListener('click', exportToPDF);
-    document.getElementById('reportBackup').addEventListener('click', createBackup);
-    document.getElementById('reportRestore').addEventListener('click', () => document.getElementById('restoreFile').click());
-
-    function generateDailyReport() {
-      const today = new Date();
-      const dailyPayments = [];
-
-      clients.forEach(client => {
-        if (client.payments) {
-          client.payments.forEach(p => {
-            if (new Date(p.date).toDateString() === today.toDateString()) {
-              dailyPayments.push({
-                client: client.name,
-                amount: p.amount,
-                notes: p.notes
-              });
-            }
-          });
-        }
-      });
-
-      let html = `
-        <h3 style="font-weight: 700; margin-bottom: 16px;">التقرير اليومي - ${today.toLocaleDateString('ar-IQ')}</h3>
-        <div style="background: var(--card); border-radius: 12px; padding: 16px; border: 1px solid rgba(255,255,255,0.1);">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-            <span style="color: var(--muted);">عدد الدفعات:</span>
-            <strong>${dailyPayments.length}</strong>
-          </div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
-            <span style="color: var(--muted);">إجمالي الدفعات:</span>
-            <strong>${dailyPayments.reduce((sum, p) => sum + p.amount, 0).toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 })}</strong>
-          </div>
-          
-          <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px;">
-            ${dailyPayments.map(p => `
-              <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                <span>${p.client}</span>
-                <span>${p.amount.toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 })}</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-
-      document.getElementById('reportContent').innerHTML = html;
-      document.getElementById('reportContent').style.display = 'block';
-    }
-
-    function generateMonthlyReport() {
-      const today = new Date();
-      const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-      const monthlyPayments = [];
-
-      clients.forEach(client => {
-        if (client.payments) {
-          client.payments.forEach(p => {
-            const pDate = new Date(p.date);
-            if (pDate >= monthStart && pDate <= today) {
-              monthlyPayments.push({
-                client: client.name,
-                amount: p.amount,
-                date: pDate.toLocaleDateString('ar-IQ')
-              });
-            }
-          });
-        }
-      });
-
-      let html = `
-        <h3 style="font-weight: 700; margin-bottom: 16px;">التقرير الشهري - ${monthStart.toLocaleDateString('ar-IQ', { year: 'numeric', month: 'long' })}</h3>
-        <div style="background: var(--card); border-radius: 12px; padding: 16px; border: 1px solid rgba(255,255,255,0.1);">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-            <span style="color: var(--muted);">عدد الدفعات:</span>
-            <strong>${monthlyPayments.length}</strong>
-          </div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
-            <span style="color: var(--muted);">إجمالي الدفعات:</span>
-            <strong>${monthlyPayments.reduce((sum, p) => sum + p.amount, 0).toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 })}</strong>
-          </div>
-          
-          <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px;">
-            ${monthlyPayments.map(p => `
-              <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px;">
-                <div>
-                  <div>${p.client}</div>
-                  <div style="color: var(--muted);">${p.date}</div>
-                </div>
-                <span>${p.amount.toLocaleString('ar-IQ', { style: 'currency', currency: 'IQD', minimumFractionDigits: 0 })}</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-
-      document.getElementById('reportContent').innerHTML = html;
-      document.getElementById('reportContent').style.display = 'block';
-    }
-
-    function exportToExcel() {
-      let csv = 'الاسم,الهاتف,العنوان,القسط الإجمالي,الدفعة الأولى,المتبقي,عدد الأشهر,تاريخ البداية\n';
-
-      clients.forEach(client => {
-        const remaining = client.installmentAmount - (client.firstPayment || 0) - (client.payments?.reduce((sum, p) => sum + p.amount, 0) || 0);
-        csv += `"${client.name}","${client.phone}","${client.address || ''}",${client.installmentAmount},${client.firstPayment || 0},${remaining},${client.months},"${client.startDate}"\n`;
-      });
-
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
-      link.setAttribute('download', `installments_${new Date().toISOString().slice(0, 10)}.csv`);
-      link.click();
-      showToast('تم تصدير البيانات');
-    }
-
-    function exportToPDF() {
-      let pdfContent = 'تطبيق الأقساط - التقرير الشامل\n';
-      pdfContent += '=' + '='.repeat(50) + '\n\n';
-
-      clients.forEach(client => {
-        const remaining = client.installmentAmount - (client.firstPayment || 0) - (client.payments?.reduce((sum, p) => sum + p.amount, 0) || 0);
-        const monthlyAmount = (client.installmentAmount - (client.firstPayment || 0)) / client.months;
-
-        pdfContent += `العميل: ${client.name}\n`;
-        pdfContent += `الهاتف: ${client.phone}\n`;
-        pdfContent += `القسط الإجمالي: ${client.installmentAmount} د.ع\n`;
-        pdfContent += `المتبقي: ${remaining} د.ع\n`;
-        pdfContent += `القسط الشهري: ${monthlyAmount.toFixed(0)} د.ع\n`;
-        pdfContent += '-'.repeat(50) + '\n\n';
-      });
-
-      const blob = new Blob([pdfContent], { type: 'text/plain' });
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
-      link.setAttribute('download', `installments_${new Date().toISOString().slice(0, 10)}.txt`);
-      link.click();
-      showToast('تم تصدير التقرير');
-    }
-
-    function createBackup() {
-      const backup = {
-        date: new Date().toISOString(),
-        clients,
-        settings
-      };
-
-      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
-      link.setAttribute('download', `installments_backup_${new Date().toISOString().slice(0, 10)}.json`);
-      link.click();
-      showToast('تم إنشاء النسخة الاحتياطية');
-    }
-
-    document.getElementById('restoreFile').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        try {
-          const backup = JSON.parse(event.target.result);
-          clients = backup.clients || [];
-          settings = { ...settings, ...backup.settings };
-          saveData();
-          showToast('تم استعادة البيانات');
-          updateClientsScreen();
-          updateDashboard();
-        } catch (err) {
-          showToast('خطأ في استعادة البيانات', 'error');
-        }
-      };
-      reader.readAsText(file);
-    });
-
-    // الإعدادات
-    document.getElementById('btnSaveSettings').addEventListener('click', () => {
-      settings.whatsappNumber = document.getElementById('whatsappNumber').value;
-      settings.reminderDays = parseInt(document.getElementById('reminderDays').value) || 3;
-      saveData();
-      showToast('تم حفظ الإعدادات');
-    });
-
-    document.getElementById('btnClearData').addEventListener('click', () => {
-      if (!confirm('هل تريد حذف جميع البيانات؟ هذا الإجراء لا يمكن التراجع عنه')) return;
-      clients = [];
-      saveData();
-      updateClientsScreen();
-      updateDashboard();
-      showToast('تم حذف جميع البيانات');
-    });
-
-    // تحميل الإعدادات المحفوظة
-    document.addEventListener('DOMContentLoaded', () => {
-      const user = localStorage.getItem('currentUser');
-      if (user) {
-        currentUser = JSON.parse(user);
-        loadData();
-        document.getElementById('loginScreen').classList.remove('active');
-        document.getElementById('app').style.display = 'flex';
-        document.querySelector('.navbar').style.display = 'flex';
-        document.querySelector('.sidebar').style.display = 'flex';
-        updateClientsScreen();
-        updateDashboard();
-        document.getElementById('whatsappNumber').value = settings.whatsappNumber || '';
-        document.getElementById('reminderDays').value = settings.reminderDays || 3;
-      }
-    });
+    // ============ تحميل البيانات عند البدء ============
+    loadData();
   </script>
 </body>
 </html>
